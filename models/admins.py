@@ -4,8 +4,8 @@ from models.organizations import Organizations
 from models.users import Users
 import uuid
 
-class Workers(Base):
-    __tablename__ = "workers"
+class Admins(Base):
+    __tablename__ = "admins"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID,ForeignKey("Users.id"),nullable=False)

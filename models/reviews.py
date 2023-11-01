@@ -5,8 +5,8 @@ from models.users import Users
 import uuid
 import datetime
 
-class Complaints(Base):
-    __tablename__ = "complaints"
+class Reviews(Base):
+    __tablename__ = "reviews"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID,ForeignKey("Users.id"),nullable=False)
