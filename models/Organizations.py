@@ -1,6 +1,7 @@
 from sqlalchemy import UUID, ForeignKey, String, Boolean, Column
 from database import Base
 from models.owners import Owners
+import uuid
 
 class Organizations(Base):
     __tablename__ = "organizations"
