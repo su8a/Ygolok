@@ -1,6 +1,7 @@
 from sqlalchemy import UUID, ForeignKey, String, Boolean, Column
 from database import Base
 from models.passwords import Passwords
+import uuid
 
 class Users(Base):
     __tablename__ = "users"
