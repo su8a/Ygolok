@@ -1,4 +1,4 @@
-from sqlalchemy import UUID, ForeignKey, String, Column
+from sqlalchemy import UUID, ForeignKey, String, Boolean, Column
 from database import Base
 from models.owners import Owners
 import uuid

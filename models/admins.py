@@ -1,4 +1,4 @@
-from sqlalchemy import UUID, ForeignKey, String, Boolean, Column
+from sqlalchemy import UUID, ForeignKey, String, Column
 from database import Base
 from models.organizations import Organizations
 from models.users import Users
