@@ -9,7 +9,6 @@ class Organizations(Base):
     owner_id = Column(UUID,ForeignKey("Owners.id"),nullable=False)
     title = Column(String,nullable=False)
     address = Column(String,nullable=False)
-    name = Column(String,nullable=False)
     logo = Column(String,nullable=False)
     inn = Column(String,nullable=False)
     ogrn = Column(String,nullable=False)
