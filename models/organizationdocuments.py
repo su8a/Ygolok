@@ -1,16 +1,13 @@
-from sqlalchemy import UUID, ForeignKey, String, Boolean, Column
+from sqlalchemy import UUID, ForeignKey, String,  Column
 from database import Base
-from models.owners import Owners
+from models.organizations import Organizations
 import uuid
 
-class Organizations(Base):
-    __tablename__ = "organizations"
+class OrganizationDocument(Base):
+    __tablename__ = "organizationdocument"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    owner_id = Column(UUID,ForeignKey("Owners.id"),nullable=False)
-    title = Column(String,nullable=False)
+    org_id = Column(UUID,ForeignKey("Organizations.id"),nullable=False)
+    doc_title = Column(String,nullable=False)
     address = Column(String,nullable=False)
-    logo = Column(String,nullable=False)
-    inn = Column(String,nullable=False)
-    ogrn = Column(String,nullable=False)
- 
+    document = Column(String,nullable=False)
