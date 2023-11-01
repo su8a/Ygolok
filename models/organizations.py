@@ -13,3 +13,4 @@ class Organizations(Base):
     logo = Column(String,nullable=False)
     inn = Column(String,nullable=False)
     ogrn = Column(String,nullable=False)
+

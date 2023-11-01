@@ -1,9 +1,11 @@
 from sqlalchemy import UUID, ForeignKey, String, Column, TIMESTAMP
 from database import Base
-from models.organizations import Organizations
+from models.Organizations import Organizations
 from models.users import Users
+
 import uuid
 import datetime
+
 
 class Complaints(Base):
     __tablename__ = "complaints"
