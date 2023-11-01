@@ -7,4 +7,4 @@ class Passwords(Base):
 
     id = Column(UUID, primary_key=True, index=True,)
     user_id = Column(UUID, ForeignKey("Users.id"))
-    password = Column(Integer,nullable=False)
+    password = Column(String,nullable=False)
