@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db_app
+    env_file:
+      - .env
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+
+  app:
+    build:
+      context: .
+    container_name: fastapi_app
+    command: ['/fastapi_app/run.sh']
+    env_file:
+      - .env
+    ports:
+      - 9999:8000
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_volume:

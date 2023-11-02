@@ -1,12 +1,12 @@
 from sqlalchemy import UUID, ForeignKey, String, Column, TIMESTAMP
-from database import Base
-from models.organizations import Organizations
-from models.users import Users
+from .base import Base
+
 import uuid
 import datetime
 
-class Reviews(Base):
-    __tablename__ = "reviews"
+
+class Complaints(Base):
+    __tablename__ = "complaints"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID,ForeignKey("Users.id"),nullable=False)
