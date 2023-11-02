@@ -1,12 +1,13 @@
 from sqlalchemy import UUID, ForeignKey, String, Column
-from .base import Base
-
+from db.models.base_model import Base
+from sqlalchemy.ext.declarative import as_declarative
 import uuid
 
 
+@as_declarative()
 class Passwords(Base):
     __tablename__ = "passwords"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID, ForeignKey("Users.id"))
+    user_id = Column(UUID, ForeignKey("users.id"))
     password = Column(String, nullable=False)

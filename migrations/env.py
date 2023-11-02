@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from config import DB_HOST, DB_PORT, POSTGRES_USER, DB_NAME, POSTGRES_PASSWORD
-from db.models.base import Base
+from db.models.base_model import Base
 
 
 # this is the Alembic Config object, which provides

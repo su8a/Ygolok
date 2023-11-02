@@ -1,14 +1,15 @@
 from sqlalchemy import UUID, ForeignKey, String, Column
-from .base import Base
-
+from db.models.base_model import Base
+from sqlalchemy.ext.declarative import as_declarative
 import uuid
 
 
+@as_declarative()
 class Organizations(Base):
     __tablename__ = "organizations"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    owner_id = Column(UUID, ForeignKey("Owners.id"), nullable=False)
+    owner_id = Column(UUID, ForeignKey("owners.id"), nullable=False)
     title = Column(String, nullable=False)
     address = Column(String, nullable=False)
     logo = Column(String, nullable=False)

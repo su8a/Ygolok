@@ -1,14 +1,15 @@
 from sqlalchemy import UUID, ForeignKey, String, Column
-from .base import Base
-
+from db.models.base_model import Base
+from sqlalchemy.ext.declarative import as_declarative
 import uuid
 
 
+@as_declarative()
 class OrganizationDocument(Base):
     __tablename__ = "organizationdocument"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    org_id = Column(UUID, ForeignKey("Organizations.id"), nullable=False)
+    org_id = Column(UUID, ForeignKey("organizations.id"), nullable=False)
     doc_title = Column(String, nullable=False)
     address = Column(String, nullable=False)
     document = Column(String, nullable=False)

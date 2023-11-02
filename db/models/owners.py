@@ -1,9 +1,10 @@
 from sqlalchemy import UUID, ForeignKey, String, Boolean, Column
-from .base import Base
-
+from db.models.base_model import Base
+from sqlalchemy.ext.declarative import as_declarative
 import uuid
 
 
+@as_declarative()
 class Owners(Base):
     __tablename__ = "owners"
 
@@ -14,6 +15,6 @@ class Owners(Base):
     ogrn = Column(String, nullable=False)
     patronymic = Column(String, nullable=True)
     phone = Column(String, nullable=False, unique=True)
-    password_id = Column(UUID, ForeignKey("Passwords.id"), nullable=False)
+    password_id = Column(UUID, ForeignKey("passwords.id"), nullable=False)
     avatar = Column(String, nullable=False)
     is_verified = Column(Boolean, nullable=False)
