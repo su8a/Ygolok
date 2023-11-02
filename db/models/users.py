@@ -1,7 +1,7 @@
-from sqlalchemy import UUID, ForeignKey, String, Boolean, Column
-from .base import Base
-
 import uuid
+
+from sqlalchemy import UUID, ForeignKey, String, Boolean, Column
+from db.models.base_model import Base
 
 
 class Users(Base):
@@ -12,6 +12,6 @@ class Users(Base):
     last_name = Column(String, nullable=False)
     patronymic = Column(String, nullable=True)
     phone = Column(String, nullable=False, unique=True)
-    password_id = Column(UUID, ForeignKey("Passwords.id"), nullable=False)
+    password_id = Column(UUID, ForeignKey("passwords.id"), nullable=False)
     avatar = Column(String, nullable=False)
     is_verified = Column(Boolean, nullable=False)
