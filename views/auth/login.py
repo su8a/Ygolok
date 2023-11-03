@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.dals.userdal import UserDAL
 from db.models.users import Users
-from db.session import get_db
+from db.base import get_db
 from views.auth.hashing import Hasher
 from views.auth.security import create_access_token
 from views.auth.schemas import Token

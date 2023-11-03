@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from views.auth.schemas import UserCreate, ShowUser
-from db.session import async_session
+from db.base import async_session
 from db.dals.userdal import UserDAL
 from views.auth.hashing import Hasher
 
