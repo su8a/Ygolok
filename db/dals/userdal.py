@@ -13,13 +13,14 @@ class UserDAL:
     async def create_user(
         self,
         name: str,
-        email: str,
+        phone: str,
         hashed_password: str,
     ) -> Users:
         new_user = Users(
             name=name,
-            email=email,
+            phone=phone,
             hashed_password=hashed_password,
+            is_verified=False,
         )
         self.db_session.add(new_user)
         await self.db_session.flush()
