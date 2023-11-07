@@ -22,15 +22,15 @@ from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 login_router = APIRouter()
 
 
-async def _get_user_by_name_for_auth(name: str, db: AsyncSession):
+async def _get_user_by_phone_for_auth(phone: str, db: AsyncSession):
     async with db as session:
         async with session.begin():
             user_dal = UserDAL(session)
-            return await user_dal.get_user_by_name(name)
+            return await user_dal.get_user_by_phone(phone)
 
 
-async def authenticate_user(name: str, password: str, db: AsyncSession) -> Optional[Users]:
-    user = await _get_user_by_name_for_auth(name=name, db=db)
+async def authenticate_user(phone: str, password: str, db: AsyncSession) -> Optional[Users]:
+    user = await _get_user_by_phone_for_auth(phone=phone, db=db)
     if not user or not Hasher.verify_password(password, user.hashed_password):
         return
     return user

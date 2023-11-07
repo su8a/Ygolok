@@ -12,6 +12,6 @@ class Users(Base):
     last_name = Column(String, nullable=True)
     patronymic = Column(String, nullable=True)
     phone = Column(String, nullable=False, unique=True)
-    password_id = Column(UUID, ForeignKey("passwords.id"))
+    password_id = Column(UUID(as_uuid=True), ForeignKey("passwords.id"))
     avatar = Column(String, nullable=True)
     is_verified = Column(Boolean, nullable=False)

@@ -3,6 +3,7 @@ from sqlalchemy import select
 from typing import Optional
 
 from db.models.users import Users
+from db.models.passwords import Passwords
 
 
 class UserDAL:
@@ -16,18 +17,24 @@ class UserDAL:
         phone: str,
         hashed_password: str,
     ) -> Users:
+        new_password = Passwords(
+            password=hashed_password
+        )
+        print(new_password.id)
+        self.db_session.add(new_password)
+        await self.db_session.flush()
         new_user = Users(
             name=name,
             phone=phone,
-            hashed_password=hashed_password,
             is_verified=False,
+            password_id=new_password.id,
         )
         self.db_session.add(new_user)
         await self.db_session.flush()
         return new_user
 
-    async def get_user_by_name(self, name: str) -> Optional[Users]:
-        query = select(Users).where(Users.name == name)
+    async def get_user_by_phone(self, phone: str) -> Optional[Users]:
+        query = select(Users).where(Users.phone == phone)
         res = await self.db_session.execute(query)
         user_row = res.fetchone()
         print(user_row)
