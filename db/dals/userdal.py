@@ -5,7 +5,6 @@ from typing import Optional
 from db.models.users import Users
 
 
-
 class UserDAL:
 
     def __init__(self, db_session: AsyncSession):

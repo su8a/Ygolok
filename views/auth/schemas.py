@@ -18,12 +18,12 @@ class ShowUser(TunedModel):
     is_verified: bool
 
 
-class UserCreate(BaseModel):
+class CreateUser(TunedModel):
     name: str
     phone: PhoneNumber
     password: str
 
 
-class Token(BaseModel):
+class Token(TunedModel):
     access_token: str
     token_type: str
