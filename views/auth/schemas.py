@@ -21,7 +21,7 @@ class ShowUser(TunedModel):
     is_verified: bool
 
 
-class UserCreate(BaseModel):
+class CreateUser(TunedModel):
     name: str
     phone: Optional[str]
     password: str
@@ -39,6 +39,6 @@ class UserCreate(BaseModel):
         use_enum_values = True
 
 
-class Token(BaseModel):
+class Token(TunedModel):
     access_token: str
     token_type: str

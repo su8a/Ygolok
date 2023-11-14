@@ -1,14 +1,14 @@
 from fastapi import APIRouter
-from views.auth.schemas import UserCreate, ShowUser
+from views.auth.schemas import CreateUser, ShowUser
 from db.base import async_session
 from db.dals.userdal import UserDAL
 from db.dals.passworddal import PasswordDAL
-from views.auth.hashing import Hasher
+from views.secur.hashing import Hasher
 
-register_router = APIRouter()
+user_register_router = APIRouter()
 
 
-async def _create_new_user(body: UserCreate) -> ShowUser:
+async def _create_new_user(body: CreateUser) -> ShowUser:
     async with async_session() as session:
         async with session.begin():
             user_dal = UserDAL(session)
@@ -23,6 +23,6 @@ async def _create_new_user(body: UserCreate) -> ShowUser:
             )
 
 
-@register_router.post('/', response_model=ShowUser)
-async def register(body: UserCreate) -> ShowUser:
+@user_register_router.post('/', response_model=ShowUser, tags=['user'])
+async def register(body: CreateUser) -> ShowUser:
     return await _create_new_user(body)
