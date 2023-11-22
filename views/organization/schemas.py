@@ -1,12 +1,11 @@
 import uuid
-
+from fastapi import File, UploadFile
 from pydantic import BaseModel
 
 
 class CreateOrganization(BaseModel):
     title: str
     address: str
-    logo: str
     inn: str
     ogrn: str
 

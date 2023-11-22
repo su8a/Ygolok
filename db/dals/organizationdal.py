@@ -1,12 +1,14 @@
+import os
 import uuid
 
 import sqlalchemy
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, update
 from typing import Optional
 
+from config import DEFAULT_PATH_ORG_IMAGE
 from db.models.organizations import Organizations
 from views.organization.schemas import ShowOrganization
 
@@ -15,10 +17,29 @@ class OrganizationDAL:
     def __init__(self, db_session: AsyncSession):
         self.db_session = db_session
 
+    @staticmethod
+    def __upload_photos(file: UploadFile, inn: str):
+        cwd = os.getcwd()
+        path_image_dir = "static/orgLogos/"
+        full_image_path = os.path.join(cwd, path_image_dir, file.filename)
+
+        if not os.path.exists(path_image_dir):
+            os.mkdir(path_image_dir)
+
+        file_name = f'{path_image_dir}{inn}.png'
+
+
+        with open(file_name, 'wb+') as f:
+            f.write(file.file.read())
+            f.flush()
+            f.close()
+
+        return file_name
+
     async def create_organization(
             self,
             owner_id: uuid.UUID, title: str,
-            address: str, logo: str, inn: str,
+            address: str, inn: str,
             ogrn: str
     ) -> Organizations:
         try:
@@ -26,7 +47,7 @@ class OrganizationDAL:
                 owner_id=owner_id,
                 title=title,
                 address=address,
-                logo=logo,
+                logo=DEFAULT_PATH_ORG_IMAGE,
                 inn=inn,
                 ogrn=ogrn
             )
@@ -37,7 +58,7 @@ class OrganizationDAL:
         except IntegrityError as err:
             raise HTTPException(status_code=409, detail='inn already exists')
 
-    async def search_organization_by_inn(self, inn: str, title: str, lim: int, offset: int):
+    async def search_organization(self, inn: str, title: str, lim: int, offset: int):
         if lim < 0 or offset < 0:
             return {'response: ': 'value cannot be negative'}
 
@@ -95,5 +116,14 @@ class OrganizationDAL:
             return {'response: ': organization_row}
 
         raise HTTPException(status_code=404, detail='Not found')
+
+    async def change_organization_logo(self, file: UploadFile, inn: str, owner_id: uuid.UUID):
+        stmt = update(Organizations).where(Organizations.inn == inn, Organizations.owner_id == owner_id).values(logo=self.__upload_photos(file, inn))
+
+        await self.db_session.execute(stmt)
+        await self.db_session.commit()
+
+        return {'response: ': 'successful'}
+
 
 

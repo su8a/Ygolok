@@ -1,7 +1,7 @@
 import uuid
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.base import async_session, get_db
@@ -14,11 +14,18 @@ from views.organization.schemas import CreateOrganization, ShowOrganization
 organization_router = APIRouter()
 
 
+async def _change_organization_logo(file: UploadFile, inn: str, owner_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+    async with db as session:
+        async with session.begin():
+            organization_dal = OrganizationDAL(session)
+            return await organization_dal.change_organization_logo(file, inn, owner_id)
+
+
 async def _search_organization_by_id(inn: str, title: str, lim: int, offset: int, db: AsyncSession):
     async with db as session:
         async with session.begin():
             organization_dal = OrganizationDAL(session)
-            return await organization_dal.search_organization_by_inn(inn, title, lim, offset)
+            return await organization_dal.search_organization(inn, title, lim, offset)
 
 
 async def _show_organization(inn: str, db: AsyncSession):
@@ -36,7 +43,6 @@ async def _create_organization(body: CreateOrganization, current_owner, db: Asyn
                 owner_id=current_owner.id,
                 title=body.title,
                 address=body.address,
-                logo=body.logo,
                 inn=body.inn,
                 ogrn=body.ogrn
             )
@@ -95,3 +101,8 @@ async def show_all_owners_organizations(
         current_owner: Owners = Depends(get_current_owner_from_token)):
 
     return await _show_all_owners_organizations(lim=lim, offset=offset, db=db, current_owner=current_owner)
+
+
+@organization_router.put('/organization/profile/change-logo')
+async def change_org_logo(inn: str, file: UploadFile = File(...), current_owner: Owners = Depends(get_current_owner_from_token), db: AsyncSession = Depends(get_db)):
+    return await _change_organization_logo(inn=inn, file=file, owner_id=current_owner.id, db=db)
