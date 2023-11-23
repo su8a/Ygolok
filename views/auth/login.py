@@ -19,7 +19,7 @@ from views.auth.schemas import Token
 from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
 from db.dals.passworddal import PasswordDAL
-
+import re
 
 user_login_router = APIRouter()
 
@@ -45,12 +45,13 @@ async def authenticate_user(phone: str, password: str, db: AsyncSession) -> Opti
         return
     return user
 
+
 oauth2_scheme_user = OAuth2PasswordBearer(tokenUrl='v1/user/auth/token')
 
 
 @user_login_router.post('/token', response_model=Token, tags=['user'])
 async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)
+        form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)
 ):
     user = await authenticate_user(form_data.username, form_data.password, db)
     if not user:
@@ -67,7 +68,7 @@ async def login_for_access_token(
 
 
 async def get_current_user_from_token(
-    token: str = Depends(oauth2_scheme_user), db: AsyncSession = Depends(get_db)
+        token: str = Depends(oauth2_scheme_user), db: AsyncSession = Depends(get_db)
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -89,13 +90,15 @@ async def get_current_user_from_token(
     return user
 
 
+
+
 @user_login_router.get("/about_me", tags=['user'])
 async def about_me(
-    current_user: Users = Depends(get_current_user_from_token),
+        current_user: Users = Depends(get_current_user_from_token),
 ):
     return {"Success": True, "current_user":
-            {
-                current_user.name, current_user.email,
-                current_user.id, current_user.is_verified
-                }
+        {
+            current_user.name, current_user.email,
+            current_user.id, current_user.is_verified
+        }
             }

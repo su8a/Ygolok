@@ -4,6 +4,7 @@ from db.base import async_session
 from db.dals.userdal import UserDAL
 from db.dals.passworddal import PasswordDAL
 from views.secur.hashing import Hasher
+from views.secur.change_number import format_phone_number
 
 user_register_router = APIRouter()
 
@@ -19,7 +20,7 @@ async def _create_new_user(body: CreateUser) -> ShowUser:
                 password_id=password.id
             )
             return ShowUser(
-                id=user.id, name=user.name, phone=user.phone, is_verified=user.is_verified
+                id=user.id, name=user.name, phone=format_phone_number(user.phone), is_verified=user.is_verified
             )
 
 
